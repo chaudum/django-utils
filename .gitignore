@@ -1,0 +1,11 @@
+parts/
+bin/
+develop-eggs/
+downloads/
+*.DS_Store
+*.egg-info/
+*.pyc
+*.swp
+*~1~
+.installed.cfg
+

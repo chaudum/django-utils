@@ -1,0 +1,13 @@
+==============================
+ CHANGES for rjdj.djangoutils
+==============================
+
+
+trunk
+------
+
+  - added profile decorator
+
+  - initialized project
+
+  
