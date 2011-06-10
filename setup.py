@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup_dict = dict(
     name = "rjdj.djangoutils",
-    version = "0.1",
+    version = "0.1.1",
     author = 'Reality Jockey Limited',
     author_email = 'info@rjdj.me',
     description = 'Utility Package for Django and Tornado',
