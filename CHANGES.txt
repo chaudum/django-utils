@@ -6,8 +6,9 @@
 trunk
 ------
 
+  - added SSL Middleware class for correct redirects
+
   - added profile decorator
 
   - initialized project
 
-  
