@@ -21,14 +21,15 @@ class SSLRedirect:
     """Middleware for SSL"""
 
     def process_request(self, request):
-        if settings.DEBUG:
-            print "SSL_DEBUG: hostname=%s" % get_host(request)
-            print "SSL_DEBUG: uri=%s" % request.get_full_path()
+        pass
+#        if settings.DEBUG:
+#            print "SSL_DEBUG: hostname=%s" % get_host(request)
+#            print "SSL_DEBUG: uri=%s" % request.get_full_path()
 
 
     def process_response(self, request, response):
-        if settings.DEBUG:
-            print "SSL_DEBUG: status_code=%s" % response.status_code
+#        if settings.DEBUG:
+#            print "SSL_DEBUG: status_code=%s" % response.status_code
         if (response.status_code == 302 or \
             response.status_code == 301) and not \
             response["Location"].startswith("http"):
@@ -39,8 +40,8 @@ class SSLRedirect:
                 if response["Location"].endswith("/"):
                     abs_path += "/"
             newurl = "https://%s%s" % (get_host(request),abs_path)
-            if settings.DEBUG:
-                print "SSL_DEBUG: redirect=%s" % newurl
+#            if settings.DEBUG:
+#                print "SSL_DEBUG: redirect=%s" % newurl
             return HttpResponsePermanentRedirect(newurl)
         else:
             return response

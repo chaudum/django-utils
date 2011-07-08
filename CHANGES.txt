@@ -6,6 +6,8 @@
 trunk
 ------
 
+  - removed debugging statements
+
   - added SSL Middleware class for correct redirects
 
   - added profile decorator
