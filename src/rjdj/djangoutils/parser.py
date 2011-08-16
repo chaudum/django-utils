@@ -35,7 +35,11 @@ class RequestParser(object):
 
     def check_valid_timestamp(self, value):
         """ Returns if the timestamp is within a certain offset from now. """
-        client_utc_ts = datetime.utcfromtimestamp(value)
+        try:
+            client_utc_ts = datetime.utcfromtimestamp(value)
+        except TypeError as te:
+            return False
+            
         server_utc_ts = datetime.utcnow()
         d = timedelta(seconds = self.ALLOWED_TIME_OFFSET)
         return abs(client_utc_ts - server_utc_ts) <= d
@@ -64,7 +68,7 @@ class RequestParser(object):
 
         self.timestamp = self.message.get("timestamp")
         if not self.check_valid_timestamp(self.timestamp):
-            raise InvalidTimestamp
+            raise InvalidTimestamp()
 
         self.uid = self.message.get("uid")
 
