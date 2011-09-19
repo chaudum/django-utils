@@ -6,6 +6,9 @@
 trunk
 ------
 
+  - extended request.is_secure with check if proxy server (or load
+    balancer is secure
+
   - added ThreadLocal middleware to store current request
 
   - added multi proxy middleware

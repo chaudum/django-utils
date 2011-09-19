@@ -10,7 +10,7 @@
 __docformat__ = "reStructuredText"
 
 import threading
-from os import path
+from os import path, environ
 from django.conf import settings
 from django.http import (HttpResponseRedirect,
                          HttpResponsePermanentRedirect,
@@ -59,6 +59,7 @@ class MultipleProxyMiddleware(object):
         'HTTP_X_FORWARDED_FOR',
         'HTTP_X_FORWARDED_HOST',
         'HTTP_X_FORWARDED_SERVER',
+        'HTTP_X_FORWARDED_PROTOCOL',
     ]
 
     def process_request(self, request):
@@ -72,7 +73,18 @@ class MultipleProxyMiddleware(object):
                     parts = request.META[field].split(',')
                     request.META[field] = parts[-1].strip()
 
+        def is_secure(x_fwd_protocol):
+            ## Check if proxy is secure
+            def newfn():
+                is_secure = environ.get("HTTPS") == "on"
+                is_secure_proxy = x_fwd_protocol == "https"
+                return is_secure or is_secure_proxy
+            return newfn
 
+        x_fwd_protocol = request.META.get('HTTP_X_FORWARDED_PROTOCOL')
+        request.is_secure = is_secure(x_fwd_protocol)
+
+        
 def get_current_request():
     return getattr(_thread_locals, 'request', None)
 
