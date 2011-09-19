@@ -9,6 +9,7 @@
 
 __docformat__ = "reStructuredText"
 
+import threading
 from os import path
 from django.conf import settings
 from django.http import (HttpResponseRedirect,
@@ -16,9 +17,12 @@ from django.http import (HttpResponseRedirect,
                          get_host,
                          )
 
+_thread_locals = threading.local()
 
-class SSLRedirect:
-    """Middleware for SSL"""
+
+
+class SSLRedirect(object):
+    """Middleware for correct SSL redirects"""
 
     def process_request(self, request):
         pass
@@ -48,7 +52,7 @@ class SSLRedirect:
             return response
 
 
-class MultipleProxyMiddleware:
+class MultipleProxyMiddleware(object):
     """https://docs.djangoproject.com/en/1.3/ref/request-response/"""
 
     FORWARDED_FOR_FIELDS = [
@@ -67,3 +71,17 @@ class MultipleProxyMiddleware:
                 if ',' in request.META[field]:
                     parts = request.META[field].split(',')
                     request.META[field] = parts[-1].strip()
+
+
+def get_current_request():
+    return getattr(_thread_locals, 'request', None)
+
+class ThreadLocals(object):
+    """
+    Middleware that gets various objects from the
+    request object and saves them in thread local storage.
+    http://stackoverflow.com/questions/1057252/django-how-do-i-access-the-request-object-or-any-other-variable-in-a-forms-clea
+    """
+
+    def process_request(self, request):
+        _thread_locals.request = request
